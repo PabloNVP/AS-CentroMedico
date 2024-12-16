@@ -1,0 +1,21 @@
+plugins {
+    id 'application'
+}
+
+group = "org.centroMedico"
+version = "1.0"
+
+repositories {
+    mavenCentral()
+}
+
+application {
+    mainClass = "org.centroMedico.App"
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(11)
+    }
+}
+
