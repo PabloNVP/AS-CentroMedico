@@ -17,6 +17,8 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 import org.centroMedico.controlador.CENTROMEDICO;
+import org.centroMedico.servicio.GestorMensaje;
+import org.centroMedico.servicio.GestorVentanas;
 
 public class VentanaIngresoSituacion extends JFrame{
 
@@ -27,7 +29,7 @@ public class VentanaIngresoSituacion extends JFrame{
 	private final String NOMBRE_VENTANA = "Ingresar situación del paciente";
 	private final String INGRESAR_NUEVO = "Se ha guardado el historial correctamente, ¿Desea ingresar otro?";
 	
-	private JLabel tituloJL = new JLabel(CENTROMEDICO.TITULO);
+	private JLabel tituloJL = new JLabel(GestorVentanas.TITULO);
 	private JLabel nombreVentanaJL = new JLabel(NOMBRE_VENTANA);
 	private JLabel codPacienteJL = new JLabel("Codigo del paciente:");
 	private JLabel codMedicoJL = new JLabel("Codigo del medico:");
@@ -46,8 +48,8 @@ public class VentanaIngresoSituacion extends JFrame{
 	private VentanaIngresoSituacion(){
 		JPanel pantalla = new Pantalla();
 		
-		setSize(CENTROMEDICO.ALTO, CENTROMEDICO.ANCHO);
-		setTitle(CENTROMEDICO.TITULO + " - " + NOMBRE_VENTANA);
+		setSize(GestorVentanas.ALTO, GestorVentanas.ANCHO);
+		setTitle(GestorVentanas.TITULO + " - " + NOMBRE_VENTANA);
 		add(pantalla);
 		setLocationRelativeTo(null);
 		setResizable(false);
@@ -86,19 +88,19 @@ public class VentanaIngresoSituacion extends JFrame{
 			mensajeJL.setForeground(Color.RED);
 			
 			codPacienteAyuda.setBounds(490, 168, 16, 16);
-			codPacienteAyuda.setToolTipText(CENTROMEDICO.COD_PACIENTE_AYUDA);
+			codPacienteAyuda.setToolTipText(GestorMensaje.AYUDA_COD_PACIENTE.getMensaje());
 			codPacienteAyuda.setBackground(Color.LIGHT_GRAY);
 			codPacienteAyuda.setHorizontalAlignment(JLabel.CENTER);
 			codPacienteAyuda.setOpaque(true);
 			
 			codMedicoAyuda.setBounds(490, 200, 16, 16);
-			codMedicoAyuda.setToolTipText(CENTROMEDICO.COD_MEDICO_AYUDA);
+			codMedicoAyuda.setToolTipText(GestorMensaje.AYUDA_COD_MEDICO.getMensaje());
 			codMedicoAyuda.setBackground(Color.LIGHT_GRAY);
 			codMedicoAyuda.setHorizontalAlignment(JLabel.CENTER);
 			codMedicoAyuda.setOpaque(true);
 			
 			sitPacienteAyuda.setBounds(490, 250, 16, 16);
-			sitPacienteAyuda.setToolTipText(CENTROMEDICO.SIT_PACIENTE_AYUDA);
+			sitPacienteAyuda.setToolTipText(GestorMensaje.AYUDA_SIT_PACIENTE.getMensaje());
 			sitPacienteAyuda.setBackground(Color.LIGHT_GRAY);
 			sitPacienteAyuda.setHorizontalAlignment(JLabel.CENTER);
 			sitPacienteAyuda.setOpaque(true);

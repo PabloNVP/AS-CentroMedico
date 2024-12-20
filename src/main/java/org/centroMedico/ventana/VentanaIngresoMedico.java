@@ -16,6 +16,9 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import org.centroMedico.controlador.CENTROMEDICO;
+import org.centroMedico.servicio.GestorMensaje;
+import org.centroMedico.servicio.GestorVentanas;
+import org.centroMedico.servicio.Validador;
 
 public class VentanaIngresoMedico extends JFrame{
 
@@ -26,7 +29,7 @@ public class VentanaIngresoMedico extends JFrame{
 	private final String NOMBRE_VENTANA = "Ingresar datos del medico";
 	private final String INGRESAR_NUEVO = "Se han guardado los datos del Medico correctamente, ¿Desea ingresar otro?";
 	
-	private JLabel tituloJL = new JLabel(CENTROMEDICO.TITULO);
+	private JLabel tituloJL = new JLabel(GestorVentanas.TITULO);
 	private JLabel nombreVentanaJL = new JLabel(NOMBRE_VENTANA);
 	private JLabel codMedicoJL = new JLabel("Codigo del medico:");
 	private JLabel nomMedicoJL = new JLabel("Nombre del medico:");
@@ -36,14 +39,14 @@ public class VentanaIngresoMedico extends JFrame{
 	private JLabel mensajeJL = new JLabel("");
 	private JTextField codMedicoJTF = new JTextField();
 	private JTextField nomMedicoJTF = new JTextField();
-	private JComboBox<String> espMedicoJTF = new JComboBox<String>(CENTROMEDICO.ESPECIALIDADES);
+	private JComboBox<String> espMedicoJTF = new JComboBox<String>(Validador.ESPECIALIDADES);
 	private JButton ingresarJB = new JButton("Ingresar");
 	private JButton volverJB = new JButton("Volver");
 	
 	private VentanaIngresoMedico(){
 		JPanel pantalla = new Pantalla();
-		setSize(CENTROMEDICO.ALTO, CENTROMEDICO.ANCHO);
-		setTitle(CENTROMEDICO.TITULO + " - " + NOMBRE_VENTANA);
+		setSize(GestorVentanas.ALTO, GestorVentanas.ANCHO);
+		setTitle(GestorVentanas.TITULO + " - " + NOMBRE_VENTANA);
 		add(pantalla);
 		setLocationRelativeTo(null);
 		setResizable(false);
@@ -85,13 +88,13 @@ public class VentanaIngresoMedico extends JFrame{
 			espMedicoJTF.setBounds(288, 229, 192, 24);
 			
 			codMedicoAyuda.setBounds(490, 168, 16, 16);
-			codMedicoAyuda.setToolTipText(CENTROMEDICO.COD_MEDICO_AYUDA);
+			codMedicoAyuda.setToolTipText(GestorMensaje.AYUDA_COD_MEDICO.getMensaje());
 			codMedicoAyuda.setBackground(Color.LIGHT_GRAY);
 			codMedicoAyuda.setHorizontalAlignment(JLabel.CENTER);
 			codMedicoAyuda.setOpaque(true);
 			
 			nomMedicoAyuda.setBounds(490, 200, 16, 16);
-			nomMedicoAyuda.setToolTipText(CENTROMEDICO.NOM_MEDICO_AYUDA);
+			nomMedicoAyuda.setToolTipText(GestorMensaje.AYUDA_NOM_MEDICO.getMensaje());
 			nomMedicoAyuda.setBackground(Color.LIGHT_GRAY);
 			nomMedicoAyuda.setHorizontalAlignment(JLabel.CENTER);
 			nomMedicoAyuda.setOpaque(true);
@@ -153,7 +156,7 @@ public class VentanaIngresoMedico extends JFrame{
 					try {
 						String codigoMedico = codMedicoJTF.getText();
 						String nombreMedico = nomMedicoJTF.getText();
-						String especialidadMedico = CENTROMEDICO.ESPECIALIDADES[espMedicoJTF.getSelectedIndex()];
+						String especialidadMedico = Validador.ESPECIALIDADES[espMedicoJTF.getSelectedIndex()];
 						
 						CENTROMEDICO.ingresarMedico(codigoMedico, nombreMedico, especialidadMedico);
 							

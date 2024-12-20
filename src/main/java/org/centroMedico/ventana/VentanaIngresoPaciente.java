@@ -15,6 +15,8 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import org.centroMedico.controlador.CENTROMEDICO;
+import org.centroMedico.servicio.GestorMensaje;
+import org.centroMedico.servicio.GestorVentanas;
 
 public class VentanaIngresoPaciente extends JFrame{
 
@@ -25,7 +27,7 @@ public class VentanaIngresoPaciente extends JFrame{
 	private final String NOMBRE_VENTANA = "Ingresar datos del paciente";
 	private final String INGRESAR_NUEVO = "Se han guardado los datos del paciente correctamente, ¿Desea ingresar otro?";
 	
-	private JLabel tituloJL = new JLabel(CENTROMEDICO.TITULO);
+	private JLabel tituloJL = new JLabel(GestorVentanas.TITULO);
 	private JLabel nombreVentanaJL = new JLabel(NOMBRE_VENTANA);
 	private JLabel codPacienteJL = new JLabel("Codigo del paciente:");
 	private JLabel nomPacienteJL = new JLabel("Nombre del paciente:");
@@ -40,8 +42,8 @@ public class VentanaIngresoPaciente extends JFrame{
 	private VentanaIngresoPaciente(){
 		JPanel pantalla = new Pantalla();
 		
-		setSize(CENTROMEDICO.ALTO, CENTROMEDICO.ANCHO);
-		setTitle(CENTROMEDICO.TITULO + " - " + NOMBRE_VENTANA);
+		setSize(GestorVentanas.ALTO, GestorVentanas.ANCHO);
+		setTitle(GestorVentanas.TITULO + " - " + NOMBRE_VENTANA);
 		add(pantalla);
 		setLocationRelativeTo(null);
 		setResizable(false);
@@ -77,13 +79,13 @@ public class VentanaIngresoPaciente extends JFrame{
 			mensajeJL.setForeground(Color.RED);
 			
 			codPacienteAyuda.setBounds(490, 168, 16, 16);
-			codPacienteAyuda.setToolTipText(CENTROMEDICO.COD_PACIENTE_AYUDA);
+			codPacienteAyuda.setToolTipText(GestorMensaje.AYUDA_COD_PACIENTE.getMensaje());
 			codPacienteAyuda.setBackground(Color.LIGHT_GRAY);
 			codPacienteAyuda.setHorizontalAlignment(JLabel.CENTER);
 			codPacienteAyuda.setOpaque(true);
 			
 			nomPacienteAyuda.setBounds(490, 200, 16, 16);
-			nomPacienteAyuda.setToolTipText(CENTROMEDICO.NOM_PACIENTE_AYUDA);
+			nomPacienteAyuda.setToolTipText(GestorMensaje.AYUDA_NOM_PACIENTE.getMensaje());
 			nomPacienteAyuda.setBackground(Color.LIGHT_GRAY);
 			nomPacienteAyuda.setHorizontalAlignment(JLabel.CENTER);
 			nomPacienteAyuda.setOpaque(true);
@@ -94,45 +96,27 @@ public class VentanaIngresoPaciente extends JFrame{
 			addWindowListener(new WindowListener() {
 
 				@Override
-				public void windowActivated(WindowEvent e) {
-					// TODO Auto-generated method stub
-					
-				}
+				public void windowActivated(WindowEvent e) {}
 
 				@Override
-				public void windowClosed(WindowEvent e) {
-					// TODO Auto-generated method stub
-				}
+				public void windowClosed(WindowEvent e) {}
 
 				@Override
 				public void windowClosing(WindowEvent e) {
 					cerrarVentana();
-							
 				}
 
 				@Override
-				public void windowDeactivated(WindowEvent e) {
-					// TODO Auto-generated method stub
-					
-				}
+				public void windowDeactivated(WindowEvent e) {}
 
 				@Override
-				public void windowDeiconified(WindowEvent e) {
-					// TODO Auto-generated method stub
-					
-				}
+				public void windowDeiconified(WindowEvent e) {}
 
 				@Override
-				public void windowIconified(WindowEvent e) {
-					// TODO Auto-generated method stub
-					
-				}
+				public void windowIconified(WindowEvent e) {}
 
 				@Override
-				public void windowOpened(WindowEvent e) {
-					// TODO Auto-generated method stub
-					
-				}
+				public void windowOpened(WindowEvent e) {}
 							
 			});
 			

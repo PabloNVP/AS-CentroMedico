@@ -11,7 +11,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import org.centroMedico.controlador.CENTROMEDICO;
+import org.centroMedico.servicio.GestorVentanas;
 
 public class VentanaIngreso extends JFrame{
 
@@ -21,7 +21,7 @@ public class VentanaIngreso extends JFrame{
 
 	private final String nombreVentana = "Ingreso de Pacientes";
 	
-	private JLabel tituloJL = new JLabel(CENTROMEDICO.TITULO);
+	private JLabel tituloJL = new JLabel(GestorVentanas.TITULO);
 	private JLabel nombreVentanaJL = new JLabel(nombreVentana);
 	private JButton datosJB = new JButton("Ingresar datos del Paciente");
 	private JButton situacionJB = new JButton("Ingresar situación del Paciente");
@@ -31,8 +31,8 @@ public class VentanaIngreso extends JFrame{
 	private VentanaIngreso(){
 		JPanel pantalla = new Pantalla();
 		
-		setSize(CENTROMEDICO.ALTO, CENTROMEDICO.ANCHO);
-		setTitle(CENTROMEDICO.TITULO + " - " + nombreVentana);
+		setSize(GestorVentanas.ALTO, GestorVentanas.ANCHO);
+		setTitle(GestorVentanas.TITULO + " - " + nombreVentana);
 		add(pantalla);
 		setLocationRelativeTo(null);
 		setResizable(false);

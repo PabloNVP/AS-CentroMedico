@@ -16,7 +16,7 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import org.centroMedico.controlador.CENTROMEDICO;
+import org.centroMedico.controlador.ControllerVentanas;
 
 public class VentanaInformesPacientesXMedico extends JFrame{
 
@@ -26,7 +26,7 @@ public class VentanaInformesPacientesXMedico extends JFrame{
 	
 	private final String nombreVentana = "Informes de pacientes por medico";
 	
-	private JLabel tituloJL = new JLabel(CENTROMEDICO.TITULO);
+	private JLabel tituloJL = new JLabel(ControllerVentanas.TITULO);
 	private JLabel nombreVentanaJL = new JLabel(nombreVentana);
 	private JLabel codMedicoJL = new JLabel("Codigo del medico:");
 	private JLabel mensajeJL = new JLabel("");
@@ -39,8 +39,8 @@ public class VentanaInformesPacientesXMedico extends JFrame{
 	private VentanaInformesPacientesXMedico(){
 		JPanel pantalla = new Pantalla();
 		
-		setSize(CENTROMEDICO.ALTO, CENTROMEDICO.ANCHO);
-		setTitle(CENTROMEDICO.TITULO + " - " + nombreVentana);
+		setSize(ControllerVentanas.ALTO, ControllerVentanas.ANCHO);
+		setTitle(ControllerVentanas.TITULO + " - " + nombreVentana);
 		add(pantalla);
 		setLocationRelativeTo(null);
 		setResizable(false);

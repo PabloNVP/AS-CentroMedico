@@ -11,7 +11,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import org.centroMedico.controlador.CENTROMEDICO;
+import org.centroMedico.servicio.GestorVentanas;
 
 public class VentanaInicio extends JFrame{
 
@@ -21,7 +21,7 @@ public class VentanaInicio extends JFrame{
 	
 	private final String nombreVentana = "Mesa de admisión";
 	
-	private JLabel tituloJL = new JLabel(CENTROMEDICO.TITULO);
+	private JLabel tituloJL = new JLabel(GestorVentanas.TITULO);
 	private JLabel nombreVentanaJL = new JLabel(nombreVentana);
 	private JButton ingresarJB = new JButton("Ingreso de datos");
 	private JButton informesJB = new JButton("Informes");
@@ -30,8 +30,8 @@ public class VentanaInicio extends JFrame{
 	private VentanaInicio(){
 		JPanel pantalla = new Pantalla();
 		
-		setSize(CENTROMEDICO.ALTO, CENTROMEDICO.ANCHO);
-		setTitle(CENTROMEDICO.TITULO + " - " + nombreVentana);
+		setSize(GestorVentanas.ALTO, GestorVentanas.ANCHO);
+		setTitle(GestorVentanas.TITULO + " - " + nombreVentana);
 		add(pantalla);
 		setLocationRelativeTo(null);
 		setResizable(false);
@@ -64,15 +64,10 @@ public class VentanaInicio extends JFrame{
 			addWindowListener(new WindowListener() {
 
 				@Override
-				public void windowActivated(WindowEvent e) {
-					// TODO Auto-generated method stub
-					
-				}
+				public void windowActivated(WindowEvent e) {}
 
 				@Override
-				public void windowClosed(WindowEvent e) {
-					// TODO Auto-generated method stub
-				}
+				public void windowClosed(WindowEvent e) {}
 
 				@Override
 				public void windowClosing(WindowEvent e) {
@@ -80,28 +75,16 @@ public class VentanaInicio extends JFrame{
 				}
 
 				@Override
-				public void windowDeactivated(WindowEvent e) {
-					// TODO Auto-generated method stub
-					
-				}
+				public void windowDeactivated(WindowEvent e) {}
 
 				@Override
-				public void windowDeiconified(WindowEvent e) {
-					// TODO Auto-generated method stub
-					
-				}
+				public void windowDeiconified(WindowEvent e) {}
 
 				@Override
-				public void windowIconified(WindowEvent e) {
-					// TODO Auto-generated method stub
-					
-				}
+				public void windowIconified(WindowEvent e) {}
 
 				@Override
-				public void windowOpened(WindowEvent e) {
-					// TODO Auto-generated method stub
-					
-				}
+				public void windowOpened(WindowEvent e) {}
 							
 			});
 			
