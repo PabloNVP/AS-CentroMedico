@@ -3,6 +3,12 @@ package org.centroMedico.servicio;
 import java.util.Arrays;
 
 public class Validador {
+	
+	/**
+	 * Especialidades de los Medicos
+	 */
+	public static final String[] ESPECIALIDADES = {"Pediatria", "Traumatologia", "Cardiologia"};
+
     public static boolean esCodigoValido(String codigo) {
 		return codigo.matches("^[1-9][0-9]{0,3}$");
 	}

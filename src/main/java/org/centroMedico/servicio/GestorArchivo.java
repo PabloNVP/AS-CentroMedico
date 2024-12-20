@@ -9,8 +9,6 @@ import org.centroMedico.modelo.Paciente;
 public class GestorArchivo {
     private static GestorArchivo instancia;
 
-    private DataOutputStream archivo;
-
     /**
      * Path de archivos
      */
@@ -44,13 +42,15 @@ public class GestorArchivo {
             Paciente paciente = (Paciente) objeto;
 
             // Abre el archivo haciendo referencia al final del mismo.
-			this.archivo = new DataOutputStream(new FileOutputStream(Archivo.DATO_PAC_PATH.getPath(), true));
-
-			// Escribe en el archivo los datos del paciente encriptados.
-			this.archivo.writeUTF(Seguridad.getInstance().cifrado(paciente.getCodigo()));
-			this.archivo.writeUTF(Seguridad.getInstance().cifrado(paciente.getNombre()));
-
-			this.archivo.close();
+            try (DataOutputStream archivo = new DataOutputStream(new FileOutputStream(path.getPath(), true))) {
+                // Escribe en el archivo los datos del paciente encriptados.
+			    archivo.writeUTF(Seguridad.getInstance().cifrado(paciente.getCodigo()));
+			    archivo.writeUTF(Seguridad.getInstance().cifrado(paciente.getNombre()));
+            }catch(IOException e){
+                throw new Exception("Error al escribir en el archivo", e);
+            }
+        }else{
+            throw new Exception("Error de tipo");
         }
     }
 
