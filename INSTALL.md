@@ -1,7 +1,7 @@
 # Instalación / Install
 
 ## Dependencias / Dependencies
-* Java 11
+* Java 21
 * Gradle 8.11
 
 ## Compilacion / Compile

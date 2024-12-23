@@ -15,7 +15,10 @@ application {
 
 java {
     toolchain {
-        languageVersion = JavaLanguageVersion.of(11)
+        languageVersion = JavaLanguageVersion.of(21)
     }
 }
 
+dependencies {
+    implementation 'org.xerial:sqlite-jdbc:3.47.1.0'
+}
