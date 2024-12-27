@@ -1,1 +1,1 @@
-Repositorio de software de CentroMedico para certificación de producto ISO.
+Repositorio de software de CentroMedico para certificación ISO 25000.
