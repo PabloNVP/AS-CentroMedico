@@ -205,7 +205,6 @@ public class VentanaIngresoMedico extends JFrame{
 	
 	private void cerrarVentana() {
 		resetearVentana();
-		VentanaIngresoMedico.getInstancia().setVisible(false);
-		VentanaIngreso.getInstancia().setVisible(true);
+		GestorVentanas.getInstance().cambiarVentana("ingresoMedico", "ingreso");
 	}
 }

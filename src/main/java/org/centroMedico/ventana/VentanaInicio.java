@@ -17,8 +17,6 @@ public class VentanaInicio extends JFrame{
 
 	private static final long serialVersionUID = 1L;
 	
-	private static VentanaInicio instancia;
-	
 	private final String nombreVentana = "Mesa de admisión";
 	
 	private JLabel tituloJL = new JLabel(GestorVentanas.TITULO);
@@ -27,7 +25,7 @@ public class VentanaInicio extends JFrame{
 	private JButton informesJB = new JButton("Informes");
 	private JButton salirJB = new JButton("Salir");
 	
-	private VentanaInicio(){
+	public VentanaInicio(){
 		JPanel pantalla = new Pantalla();
 		
 		setSize(GestorVentanas.ALTO, GestorVentanas.ANCHO);
@@ -36,13 +34,6 @@ public class VentanaInicio extends JFrame{
 		setLocationRelativeTo(null);
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-	}
-	
-	public static VentanaInicio getInstancia() {
-		if(instancia == null)
-			instancia = new VentanaInicio();
-		
-		return instancia;
 	}
 	
 	private class Pantalla extends JPanel{
@@ -91,16 +82,14 @@ public class VentanaInicio extends JFrame{
 			ingresarJB.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					VentanaIngreso.getInstancia().setVisible(true);
-					VentanaInicio.getInstancia().setVisible(false);
+					GestorVentanas.getInstance().cambiarVentana("inicio", "ingreso");
 				}
 			});
 			
 			informesJB.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					VentanaInformes.getInstancia().setVisible(true);
-					VentanaInicio.getInstancia().setVisible(false);
+					GestorVentanas.getInstance().cambiarVentana("inicio", "informes");
 				}
 			});
 			
@@ -120,13 +109,6 @@ public class VentanaInicio extends JFrame{
 	}
 	
 	private void cerrarVentana() {
-		VentanaIngreso.getInstancia().dispose();
-		VentanaIngresoPaciente.getInstancia().dispose();
-		VentanaIngresoSituacion.getInstancia().dispose();
-		VentanaIngresoMedico.getInstancia().dispose();
-		VentanaInformes.getInstancia().dispose();
-		VentanaInformesPacientesXMedico.getInstancia().dispose();
-		VentanaInformesEnfermedadesXMedico.getInstancia().dispose();
-		VentanaInicio.getInstancia().dispose();
+		GestorVentanas.getInstance().limpiarVentanas();
 	}
 }

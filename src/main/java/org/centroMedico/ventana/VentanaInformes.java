@@ -12,40 +12,31 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import org.centroMedico.controlador.ControllerVentanas;
+import org.centroMedico.servicio.GestorVentanas;
 
 public class VentanaInformes extends JFrame{
 	private static final long serialVersionUID = 1L;
 	
-	private static VentanaInformes instancia; // REVISARR
-	
 	private final String nombreVentana = "Informes";
 	
-	private JLabel tituloJL = new JLabel(ControllerVentanas.TITULO);
+	private JLabel tituloJL = new JLabel(GestorVentanas.TITULO);
 	private JLabel nombreVentanaJL = new JLabel(nombreVentana);
 	private JButton listarPacientesJB = new JButton("Listado de pacientes por medico");
 	private JButton enfermedadesMedicoJB = new JButton("Listado de enfermedades por medico");
 	private JButton volverJB = new JButton("Volver");
 	
-	private VentanaInformes(){
+	public VentanaInformes(){
 		JPanel pantalla = new Pantalla();
 		
-		setSize(ControllerVentanas.ALTO, ControllerVentanas.ANCHO);
-		setTitle(ControllerVentanas.TITULO + " - " + nombreVentana);
+		setSize(GestorVentanas.ALTO, GestorVentanas.ANCHO);
+		setTitle(GestorVentanas.TITULO + " - " + nombreVentana);
 		add(pantalla);
 		setLocationRelativeTo(null);
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 	}
 	
-	public static VentanaInformes getInstancia() {
-		if(instancia == null)
-			instancia = new VentanaInformes();
-		
-		return instancia;
-	}
-	
-	private class Pantalla extends JPanel{
+	public class Pantalla extends JPanel{
 		
 		private static final long serialVersionUID = 1L;
 
@@ -64,15 +55,10 @@ public class VentanaInformes extends JFrame{
 			addWindowListener(new WindowListener() {
 
 				@Override
-				public void windowActivated(WindowEvent e) {
-					// TODO Auto-generated method stub
-					
-				}
+				public void windowActivated(WindowEvent e) {}
 
 				@Override
-				public void windowClosed(WindowEvent e) {
-					// TODO Auto-generated method stub
-				}
+				public void windowClosed(WindowEvent e) {}
 
 				@Override
 				public void windowClosing(WindowEvent e) {
@@ -80,44 +66,30 @@ public class VentanaInformes extends JFrame{
 				}
 
 				@Override
-				public void windowDeactivated(WindowEvent e) {
-					// TODO Auto-generated method stub
-					
-				}
+				public void windowDeactivated(WindowEvent e) {}
 
 				@Override
-				public void windowDeiconified(WindowEvent e) {
-					// TODO Auto-generated method stub
-					
-				}
+				public void windowDeiconified(WindowEvent e) {}
 
 				@Override
-				public void windowIconified(WindowEvent e) {
-					// TODO Auto-generated method stub
-					
-				}
+				public void windowIconified(WindowEvent e) {}
 
 				@Override
-				public void windowOpened(WindowEvent e) {
-					// TODO Auto-generated method stub
-					
-				}
+				public void windowOpened(WindowEvent e) {}
 							
 			});
 			
 			listarPacientesJB.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					VentanaInformes.getInstancia().setVisible(false);
-					VentanaInformesPacientesXMedico.getInstancia().setVisible(true);
+					GestorVentanas.getInstance().cambiarVentana("informes", "informesPacientes");
 				}
 			});
 			
 			enfermedadesMedicoJB.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					VentanaInformes.getInstancia().setVisible(false);
-					VentanaInformesEnfermedadesXMedico.getInstancia().setVisible(true);
+					GestorVentanas.getInstance().cambiarVentana("informes", "informesEnfermedades");
 				}
 			});
 			
@@ -137,7 +109,6 @@ public class VentanaInformes extends JFrame{
 	}
 	
 	private void cerrarVentana() {
-		VentanaInformes.getInstancia().setVisible(false);
-		VentanaInicio.getInstancia().setVisible(true);
+		GestorVentanas.getInstance().cambiarVentana("informes", "inicio");
 	}
 }

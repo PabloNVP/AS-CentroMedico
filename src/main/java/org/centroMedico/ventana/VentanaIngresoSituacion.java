@@ -209,7 +209,6 @@ public class VentanaIngresoSituacion extends JFrame{
 	
 	private void cerrarVentana() {
 		resetearVentana();
-		VentanaIngresoSituacion.getInstancia().setVisible(false);
-		VentanaIngreso.getInstancia().setVisible(true);
+		GestorVentanas.getInstance().cambiarVentana("ingresoSituacion", "ingreso");
 	}
 }

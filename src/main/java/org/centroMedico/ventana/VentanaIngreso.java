@@ -16,8 +16,6 @@ import org.centroMedico.servicio.GestorVentanas;
 public class VentanaIngreso extends JFrame{
 
 	private static final long serialVersionUID = 1L;
-	
-	private static VentanaIngreso instancia;
 
 	private final String nombreVentana = "Ingreso de Pacientes";
 	
@@ -28,7 +26,7 @@ public class VentanaIngreso extends JFrame{
 	private JButton medicoJB = new JButton("Ingresar datos del Medico");
 	private JButton volverJB = new JButton("Volver");
 	
-	private VentanaIngreso(){
+	public VentanaIngreso(){
 		JPanel pantalla = new Pantalla();
 		
 		setSize(GestorVentanas.ALTO, GestorVentanas.ANCHO);
@@ -37,13 +35,6 @@ public class VentanaIngreso extends JFrame{
 		setLocationRelativeTo(null);
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-	}
-	
-	public static VentanaIngreso getInstancia() {
-		if(instancia == null)
-			instancia = new VentanaIngreso();
-		
-		return instancia;
 	}
 	
 	private class Pantalla extends JPanel{
@@ -66,69 +57,48 @@ public class VentanaIngreso extends JFrame{
 			addWindowListener(new WindowListener() {
 
 				@Override
-				public void windowActivated(WindowEvent e) {
-					// TODO Auto-generated method stub
-					
-				}
+				public void windowActivated(WindowEvent e) {}
 
 				@Override
-				public void windowClosed(WindowEvent e) {
-					// TODO Auto-generated method stub
-				}
+				public void windowClosed(WindowEvent e) {}
 
 				@Override
 				public void windowClosing(WindowEvent e) {
-					cerrarVentana();
-							
+					cerrarVentana();		
 				}
 
 				@Override
-				public void windowDeactivated(WindowEvent e) {
-					// TODO Auto-generated method stub
-					
-				}
+				public void windowDeactivated(WindowEvent e) {}
 
 				@Override
-				public void windowDeiconified(WindowEvent e) {
-					// TODO Auto-generated method stub
-					
-				}
+				public void windowDeiconified(WindowEvent e) {}
 
 				@Override
-				public void windowIconified(WindowEvent e) {
-					// TODO Auto-generated method stub
-					
-				}
+				public void windowIconified(WindowEvent e) {}
 
 				@Override
-				public void windowOpened(WindowEvent e) {
-					// TODO Auto-generated method stub
-					
-				}
+				public void windowOpened(WindowEvent e) {}
 							
 			});
 			
 			datosJB.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					VentanaIngreso.getInstancia().setVisible(false);
-					VentanaIngresoPaciente.getInstancia().setVisible(true);
+					GestorVentanas.getInstance().cambiarVentana("ingreso", "ingresoPaciente");
 				}
 			});
 			
 			situacionJB.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					VentanaIngreso.getInstancia().setVisible(false);
-					VentanaIngresoSituacion.getInstancia().setVisible(true);
+					GestorVentanas.getInstance().cambiarVentana("ingreso", "ingresoSituacion");
 				}
 			});
 			
 			medicoJB.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					VentanaIngreso.getInstancia().setVisible(false);
-					VentanaIngresoMedico.getInstancia().setVisible(true);
+					GestorVentanas.getInstance().cambiarVentana("ingreso", "ingresoMedico");
 				}
 			});
 			
@@ -149,7 +119,6 @@ public class VentanaIngreso extends JFrame{
 	}
 	
 	public void cerrarVentana() {
-		VentanaIngreso.getInstancia().setVisible(false);
-		VentanaInicio.getInstancia().setVisible(true);
+		GestorVentanas.getInstance().cambiarVentana("ingreso", "inicio");
 	}
 }

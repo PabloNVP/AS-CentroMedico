@@ -17,7 +17,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import org.centroMedico.controlador.ControllerInformesEnfermedades;
-import org.centroMedico.controlador.ControllerVentanas;
+import org.centroMedico.servicio.GestorVentanas;
 
 public class VentanaInformesEnfermedadesXMedico extends JFrame{
 	private static final long serialVersionUID = 1L;
@@ -26,7 +26,7 @@ public class VentanaInformesEnfermedadesXMedico extends JFrame{
 
 	private final String nombreVentana = "Informes de enfermedades por medico";
 	
-	private JLabel tituloJL = new JLabel(ControllerVentanas.TITULO);
+	private JLabel tituloJL = new JLabel(GestorVentanas.TITULO);
 	private JLabel nombreVentanaJL = new JLabel(nombreVentana);
 	private JLabel codMedicoJL = new JLabel("Codigo del medico:");
 	private JLabel mensajeJL = new JLabel("");
@@ -42,8 +42,8 @@ public class VentanaInformesEnfermedadesXMedico extends JFrame{
 	private VentanaInformesEnfermedadesXMedico(){
 		JPanel pantalla = new Pantalla();
 		
-		setSize(ControllerVentanas.ALTO, ControllerVentanas.ANCHO);
-		setTitle(ControllerVentanas.TITULO + " - " + nombreVentana);
+		setSize(GestorVentanas.ALTO, GestorVentanas.ANCHO);
+		setTitle(GestorVentanas.TITULO + " - " + nombreVentana);
 		add(pantalla);
 		setLocationRelativeTo(null);
 		setResizable(false);
@@ -84,15 +84,10 @@ public class VentanaInformesEnfermedadesXMedico extends JFrame{
 			addWindowListener(new WindowListener() {
 
 				@Override
-				public void windowActivated(WindowEvent e) {
-					// TODO Auto-generated method stub
-					
-				}
+				public void windowActivated(WindowEvent e) {}
 
 				@Override
-				public void windowClosed(WindowEvent e) {
-					// TODO Auto-generated method stub
-				}
+				public void windowClosed(WindowEvent e) {}
 
 				@Override
 				public void windowClosing(WindowEvent e) {
@@ -100,28 +95,16 @@ public class VentanaInformesEnfermedadesXMedico extends JFrame{
 				}
 
 				@Override
-				public void windowDeactivated(WindowEvent e) {
-					// TODO Auto-generated method stub
-					
-				}
+				public void windowDeactivated(WindowEvent e) {}
 
 				@Override
-				public void windowDeiconified(WindowEvent e) {
-					// TODO Auto-generated method stub
-					
-				}
+				public void windowDeiconified(WindowEvent e) {}
 
 				@Override
-				public void windowIconified(WindowEvent e) {
-					// TODO Auto-generated method stub
-					
-				}
+				public void windowIconified(WindowEvent e) {}
 
 				@Override
-				public void windowOpened(WindowEvent e) {
-					// TODO Auto-generated method stub
-					
-				}
+				public void windowOpened(WindowEvent e) {}
 							
 			});
 			
@@ -134,7 +117,7 @@ public class VentanaInformesEnfermedadesXMedico extends JFrame{
 						ArrayList<String> enfermedades = controlador.listarEnfermedadesPorMedico(codMedicoJTF.getText());
 		
 						if( enfermedades.size() == 0)
-							contenidoDLM.add(0,"No existe ningun medico con ese codigo.");
+							contenidoDLM.add(0,"No existe ningún medico con ese codigo.");
 						else 
 							contenidoDLM.addAll(enfermedades);
 							
@@ -172,7 +155,6 @@ public class VentanaInformesEnfermedadesXMedico extends JFrame{
 	
 	private void cerrarVentana() {
 		resetearVentana();
-		VentanaInformesEnfermedadesXMedico.getInstancia().setVisible(false);
-		VentanaInformes.getInstancia().setVisible(true);
+		GestorVentanas.getInstance().cambiarVentana("informesEnfermedades", "informes");
 	}
 }

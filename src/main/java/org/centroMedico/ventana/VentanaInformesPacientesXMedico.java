@@ -16,7 +16,8 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import org.centroMedico.controlador.ControllerVentanas;
+import org.centroMedico.controlador.CENTROMEDICO;
+import org.centroMedico.servicio.GestorVentanas;
 
 public class VentanaInformesPacientesXMedico extends JFrame{
 
@@ -26,7 +27,7 @@ public class VentanaInformesPacientesXMedico extends JFrame{
 	
 	private final String nombreVentana = "Informes de pacientes por medico";
 	
-	private JLabel tituloJL = new JLabel(ControllerVentanas.TITULO);
+	private JLabel tituloJL = new JLabel(GestorVentanas.TITULO);
 	private JLabel nombreVentanaJL = new JLabel(nombreVentana);
 	private JLabel codMedicoJL = new JLabel("Codigo del medico:");
 	private JLabel mensajeJL = new JLabel("");
@@ -39,8 +40,8 @@ public class VentanaInformesPacientesXMedico extends JFrame{
 	private VentanaInformesPacientesXMedico(){
 		JPanel pantalla = new Pantalla();
 		
-		setSize(ControllerVentanas.ALTO, ControllerVentanas.ANCHO);
-		setTitle(ControllerVentanas.TITULO + " - " + nombreVentana);
+		setSize(GestorVentanas.ALTO, GestorVentanas.ANCHO);
+		setTitle(GestorVentanas.TITULO + " - " + nombreVentana);
 		add(pantalla);
 		setLocationRelativeTo(null);
 		setResizable(false);
@@ -81,15 +82,10 @@ public class VentanaInformesPacientesXMedico extends JFrame{
 			addWindowListener(new WindowListener() {
 
 				@Override
-				public void windowActivated(WindowEvent e) {
-					// TODO Auto-generated method stub
-					
-				}
+				public void windowActivated(WindowEvent e) {}
 
 				@Override
-				public void windowClosed(WindowEvent e) {
-					// TODO Auto-generated method stub
-				}
+				public void windowClosed(WindowEvent e) {}
 
 				@Override
 				public void windowClosing(WindowEvent e) {
@@ -97,29 +93,16 @@ public class VentanaInformesPacientesXMedico extends JFrame{
 				}
 
 				@Override
-				public void windowDeactivated(WindowEvent e) {
-					// TODO Auto-generated method stub
-					
-				}
+				public void windowDeactivated(WindowEvent e) {}
 
 				@Override
-				public void windowDeiconified(WindowEvent e) {
-					// TODO Auto-generated method stub
-					
-				}
+				public void windowDeiconified(WindowEvent e) {}
 
 				@Override
-				public void windowIconified(WindowEvent e) {
-					// TODO Auto-generated method stub
-					
-				}
+				public void windowIconified(WindowEvent e) {}
 
 				@Override
-				public void windowOpened(WindowEvent e) {
-					// TODO Auto-generated method stub
-					
-				}
-							
+				public void windowOpened(WindowEvent e) {}
 			});
 			
 			buscarJB.addActionListener(new ActionListener() {
@@ -131,7 +114,7 @@ public class VentanaInformesPacientesXMedico extends JFrame{
 						ArrayList<String> pacientes = CENTROMEDICO.listarPacientesPorMedico(codMedicoJTF.getText());
 		
 						if( pacientes.size() == 0)
-							contenidoDLM.add(0,"No existe ningun medico con ese codigo.");
+							contenidoDLM.add(0,"No existe ningún medico con ese codigo.");
 						else 
 							contenidoDLM.addAll(pacientes);
 							
@@ -169,7 +152,6 @@ public class VentanaInformesPacientesXMedico extends JFrame{
 	
 	public void cerrarVentana() {
 		resetearVentana();
-		VentanaInformesPacientesXMedico.getInstancia().setVisible(false);
-		VentanaInformes.getInstancia().setVisible(true);
+		GestorVentanas.getInstance().cambiarVentana("informesPacientes", "informes");
 	}
 }

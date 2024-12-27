@@ -4,7 +4,10 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
 
+import javax.security.auth.login.LoginException;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -12,18 +15,18 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
-import org.centroMedico.controlador.ControllerVentanas;
+import org.centroMedico.servicio.GestorBaseDeDatos;
+import org.centroMedico.servicio.GestorMensaje;
+import org.centroMedico.servicio.GestorVentanas;
 import org.centroMedico.controlador.ControllerConectar;
 
 public class VentanaConectar extends JFrame{
 
 	private static final long serialVersionUID = 1L;
 	
-	private static final String ERROR_LOGIN = "Usuario y/o contraseña incorrecta.";
-	
 	private final String nombreVentana = "Conectar";
 	
-	private JLabel tituloJL = new JLabel(ControllerVentanas.TITULO);
+	private JLabel tituloJL = new JLabel(GestorVentanas.TITULO);
 	private JLabel nombreVentanaJL = new JLabel(nombreVentana);
 	private JLabel usuarioJL = new JLabel("Usuario:");
 	private JLabel contrasenaJL = new JLabel("Contraseña:");
@@ -38,8 +41,9 @@ public class VentanaConectar extends JFrame{
 	public VentanaConectar(){
 		JPanel pantalla = new Pantalla();
 		
-		setSize(ControllerVentanas.ALTO, ControllerVentanas.ANCHO);
-		setTitle(ControllerVentanas.TITULO + " - " + nombreVentana);
+		setSize(GestorVentanas.ALTO, GestorVentanas.ANCHO);
+		setTitle(GestorVentanas.TITULO + " - " + nombreVentana);
+		setIconImage(new ImageIcon(VentanaConectar.class.getResource("/logo.png")).getImage());
 		add(pantalla);
 		setLocationRelativeTo(null);
 		setResizable(false);
@@ -73,11 +77,15 @@ public class VentanaConectar extends JFrame{
 			ingresarJB.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					if(controlador.puedeIngresarUsuario(usuarioJTF.getText(), String.valueOf(contrasenaJPF.getPassword()))) {
-						VentanaInicio.getInstancia().setVisible(true);
-						dispose();	
-					}else {
-						mensajeJL.setText(ERROR_LOGIN);
+					try {
+						controlador.puedeIngresarUsuario(usuarioJTF.getText(), String.valueOf(contrasenaJPF.getPassword()));
+						GestorBaseDeDatos.getInstance().iniciarBaseDeDatos();
+						GestorVentanas.getInstance().iniciarVentana("inicio");
+						GestorVentanas.getInstance().cerrarVentana("conectar");
+					}catch(SQLException ex) {
+						mensajeJL.setText(GestorMensaje.ERROR_SQL.getMensaje());
+					}catch(LoginException ex){
+						mensajeJL.setText(GestorMensaje.ERROR_LOGIN.getMensaje());
 					}
 				}
 			});

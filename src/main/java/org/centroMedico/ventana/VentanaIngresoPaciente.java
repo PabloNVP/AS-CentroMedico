@@ -171,7 +171,6 @@ public class VentanaIngresoPaciente extends JFrame{
 	
 	private void cerrarVentana() {
 		resetearVentana();
-		VentanaIngresoPaciente.getInstancia().setVisible(false);
-		VentanaIngreso.getInstancia().setVisible(true);
+		GestorVentanas.getInstance().cambiarVentana("ingresoPaciente", "ingreso");
 	}
 }
