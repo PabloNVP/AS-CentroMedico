@@ -30,5 +30,7 @@ public class VentanaBase extends JFrame{
 
         setContentPane(pantalla);
     }
+
+    
     
 }

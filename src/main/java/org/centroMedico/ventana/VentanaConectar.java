@@ -2,12 +2,9 @@ package org.centroMedico.ventana;
 
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.sql.SQLException;
 
 import javax.security.auth.login.LoginException;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -20,45 +17,25 @@ import org.centroMedico.servicio.GestorMensaje;
 import org.centroMedico.servicio.GestorVentanas;
 import org.centroMedico.controlador.ControllerConectar;
 
-public class VentanaConectar extends JFrame{
-
+public class VentanaConectar extends VentanaBase{
 	private static final long serialVersionUID = 1L;
 	
-	private final String nombreVentana = "Conectar";
-	
-	private JLabel tituloJL = new JLabel(GestorVentanas.TITULO);
-	private JLabel nombreVentanaJL = new JLabel(nombreVentana);
-	private JLabel usuarioJL = new JLabel("Usuario:");
-	private JLabel contrasenaJL = new JLabel("Contraseña:");
-	private JLabel mensajeJL = new JLabel("");
-	private JTextField usuarioJTF = new JTextField();
-	private JPasswordField contrasenaJPF = new JPasswordField();
-	private JButton ingresarJB = new JButton("Ingresar");
-	private JButton cerrarJB = new JButton("Cerrar");
-
 	private ControllerConectar controlador = new ControllerConectar();
 	
 	public VentanaConectar(){
-		JPanel pantalla = new Pantalla();
-		
-		setSize(GestorVentanas.ALTO, GestorVentanas.ANCHO);
-		setTitle(GestorVentanas.TITULO + " - " + nombreVentana);
-		setIconImage(new ImageIcon(VentanaConectar.class.getResource("/logo.png")).getImage());
-		add(pantalla);
-		setLocationRelativeTo(null);
-		setResizable(false);
+		super("Conectar");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-	}
-	
-	private class Pantalla extends JPanel{
-		
-		private static final long serialVersionUID = 1L;
+		inicializar(new JPanel(){
+			{
+			JLabel nombreVentanaJL = new JLabel("Conectar");
+			JLabel usuarioJL = new JLabel("Usuario:");
+			JLabel contrasenaJL = new JLabel("Contraseña:");
+			JLabel mensajeJL = new JLabel("");
+			JTextField usuarioJTF = new JTextField();
+			JPasswordField contrasenaJPF = new JPasswordField();
+			JButton ingresarJB = new JButton("Ingresar");
+			JButton cerrarJB = new JButton("Cerrar");
 
-		public Pantalla() {
-			setLayout(null);
-			
-			tituloJL.setBounds(220, 64, 320, 32);
-			tituloJL.setFont(new Font("Serif", Font.PLAIN, 22));
 			nombreVentanaJL.setBounds(275, 96, 256, 32);
 			nombreVentanaJL.setFont(new Font("Serif", Font.PLAIN, 18));
 			usuarioJL.setBounds(208, 160, 128, 32);
@@ -74,38 +51,32 @@ public class VentanaConectar extends JFrame{
 			ingresarJB.setBounds(192, 304, 256, 32);
 			cerrarJB.setBounds(192,  356, 256, 32);
 
-			ingresarJB.addActionListener(new ActionListener() {
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					try {
-						controlador.puedeIngresarUsuario(usuarioJTF.getText(), String.valueOf(contrasenaJPF.getPassword()));
-						GestorBaseDeDatos.getInstance().iniciarBaseDeDatos();
-						GestorVentanas.getInstance().iniciarVentana("inicio");
-						GestorVentanas.getInstance().cerrarVentana("conectar");
-					}catch(SQLException ex) {
-						mensajeJL.setText(GestorMensaje.ERROR_SQL.getMensaje());
-					}catch(LoginException ex){
-						mensajeJL.setText(GestorMensaje.ERROR_LOGIN.getMensaje());
-					}
+			ingresarJB.addActionListener(e -> {
+				try {
+					controlador.puedeIngresarUsuario(usuarioJTF.getText(), String.valueOf(contrasenaJPF.getPassword()));
+					GestorBaseDeDatos.getInstance().iniciarBaseDeDatos();
+					GestorVentanas.getInstance().cerrarVentana(Ventana.CONECTAR);
+					GestorVentanas.getInstance().iniciarVentana(Ventana.INICIO);
+				}catch(SQLException ex) {
+					mensajeJL.setText(GestorMensaje.ERROR_SQL.getMensaje());
+				}catch(LoginException ex){
+					mensajeJL.setText(GestorMensaje.ERROR_LOGIN.getMensaje());
 				}
 			});
 			
-			cerrarJB.addActionListener(new ActionListener() {
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					dispose();
-				}
-			});
+			cerrarJB.addActionListener(e -> 
+				GestorVentanas.getInstance().cerrarVentana(Ventana.CONECTAR)
+			);
 			
 			add(usuarioJL);
 			add(contrasenaJL);
 			add(usuarioJTF);
 			add(contrasenaJPF);
 			add(mensajeJL);
-			add(tituloJL);
 			add(nombreVentanaJL);
 			add(ingresarJB);
 			add(cerrarJB);
-		}
+			}
+		});
 	}
 }

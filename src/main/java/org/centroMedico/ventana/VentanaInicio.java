@@ -1,10 +1,8 @@
 package org.centroMedico.ventana;
 
 import java.awt.Font;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -13,27 +11,18 @@ import javax.swing.JPanel;
 
 import org.centroMedico.servicio.GestorVentanas;
 
-public class VentanaInicio extends JFrame{
-
+public class VentanaInicio extends VentanaBase{
 	private static final long serialVersionUID = 1L;
 	
-	private final String nombreVentana = "Mesa de admisión";
-	
-	private JLabel tituloJL = new JLabel(GestorVentanas.TITULO);
-	private JLabel nombreVentanaJL = new JLabel(nombreVentana);
+	private JLabel nombreVentanaJL = new JLabel("Mesa de admisión");
 	private JButton ingresarJB = new JButton("Ingreso de datos");
 	private JButton informesJB = new JButton("Informes");
 	private JButton salirJB = new JButton("Salir");
 	
 	public VentanaInicio(){
-		JPanel pantalla = new Pantalla();
-		
-		setSize(GestorVentanas.ALTO, GestorVentanas.ANCHO);
-		setTitle(GestorVentanas.TITULO + " - " + nombreVentana);
-		add(pantalla);
-		setLocationRelativeTo(null);
-		setResizable(false);
+		super("Mesa de admisión");
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		inicializar(new Pantalla());
 	}
 	
 	private class Pantalla extends JPanel{
@@ -43,8 +32,6 @@ public class VentanaInicio extends JFrame{
 		public Pantalla() {
 			setLayout(null);
 			
-			tituloJL.setBounds(170, 64, 320, 32);
-			tituloJL.setFont(new Font("Serif", Font.PLAIN, 22));
 			nombreVentanaJL.setBounds(240, 96, 256, 32);
 			nombreVentanaJL.setFont(new Font("Serif", Font.PLAIN, 18));
 			
@@ -52,55 +39,22 @@ public class VentanaInicio extends JFrame{
 			informesJB.setBounds(192,  256, 256, 32);
 			salirJB.setBounds(192, 320, 256, 32);
 			
-			addWindowListener(new WindowListener() {
-
-				@Override
-				public void windowActivated(WindowEvent e) {}
-
-				@Override
-				public void windowClosed(WindowEvent e) {}
-
+			addWindowListener(new WindowAdapter() {
 				@Override
 				public void windowClosing(WindowEvent e) {
 					cerrarVentana();
 				}
-
-				@Override
-				public void windowDeactivated(WindowEvent e) {}
-
-				@Override
-				public void windowDeiconified(WindowEvent e) {}
-
-				@Override
-				public void windowIconified(WindowEvent e) {}
-
-				@Override
-				public void windowOpened(WindowEvent e) {}
-							
 			});
 			
-			ingresarJB.addActionListener(new ActionListener() {
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					GestorVentanas.getInstance().cambiarVentana("inicio", "ingreso");
-				}
-			});
+			ingresarJB.addActionListener(e -> 
+				GestorVentanas.getInstance().cambiarVentana(Ventana.INICIO, Ventana.INGRESO));
 			
-			informesJB.addActionListener(new ActionListener() {
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					GestorVentanas.getInstance().cambiarVentana("inicio", "informes");
-				}
-			});
+			informesJB.addActionListener(e -> 
+				GestorVentanas.getInstance().cambiarVentana(Ventana.INICIO, Ventana.INFORMES));
 			
-			salirJB.addActionListener(new ActionListener() {
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					cerrarVentana();
-				}
-			});
-			
-			add(tituloJL);
+			salirJB.addActionListener(e -> 
+				cerrarVentana());
+				
 			add(nombreVentanaJL);
 			add(ingresarJB);
 			add(informesJB);

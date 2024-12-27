@@ -2,10 +2,9 @@ package org.centroMedico.ventana;
 
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
+
 import java.util.ArrayList;
 
 import javax.swing.DefaultListModel;
@@ -19,142 +18,82 @@ import javax.swing.JTextField;
 import org.centroMedico.controlador.ControllerInformesEnfermedades;
 import org.centroMedico.servicio.GestorVentanas;
 
-public class VentanaInformesEnfermedadesXMedico extends JFrame{
+public class VentanaInformesEnfermedadesXMedico extends VentanaBase{
 	private static final long serialVersionUID = 1L;
-	
-	private static VentanaInformesEnfermedadesXMedico instancia;
-
-	private final String nombreVentana = "Informes de enfermedades por medico";
-	
-	private JLabel tituloJL = new JLabel(GestorVentanas.TITULO);
-	private JLabel nombreVentanaJL = new JLabel(nombreVentana);
-	private JLabel codMedicoJL = new JLabel("Codigo del medico:");
-	private JLabel mensajeJL = new JLabel("");
-	private JTextField codMedicoJTF = new JTextField();
-	private DefaultListModel<String> contenidoDLM = new DefaultListModel<String>(); 
-	private JList<String> resultadoJL = new JList<String>(contenidoDLM);
-	private JButton buscarJB = new JButton("Buscar");
-	private JButton volverJB = new JButton("Volver");
-
 	
 	private ControllerInformesEnfermedades controlador = new ControllerInformesEnfermedades();
 	
-	private VentanaInformesEnfermedadesXMedico(){
-		JPanel pantalla = new Pantalla();
-		
-		setSize(GestorVentanas.ALTO, GestorVentanas.ANCHO);
-		setTitle(GestorVentanas.TITULO + " - " + nombreVentana);
-		add(pantalla);
-		setLocationRelativeTo(null);
-		setResizable(false);
+	public VentanaInformesEnfermedadesXMedico(){
+		super("Informes de enfermedades por medico");
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-	}
-	
-	public static VentanaInformesEnfermedadesXMedico getInstancia() {
-		if(instancia == null)
-			instancia = new VentanaInformesEnfermedadesXMedico();
-		
-		return instancia;
-	}
-	
-	private class Pantalla extends JPanel{
-		
-		private static final long serialVersionUID = 1L;
-
-		public Pantalla() {
-			setLayout(null);
-			
-			tituloJL.setBounds(170, 64, 320, 32);
-			tituloJL.setFont(new Font("Serif", Font.PLAIN, 22));
+		inicializar(new JPanel(){
+			{
+			JLabel nombreVentanaJL = new JLabel("Informes de enfermedades por medico");
 			nombreVentanaJL.setBounds(150, 96, 360, 32);
 			nombreVentanaJL.setFont(new Font("Serif", Font.PLAIN, 18));
 			
+			JLabel codMedicoJL = new JLabel("Codigo del medico:");
 			codMedicoJL.setBounds(128, 126, 192, 32);
 		
+			JTextField codMedicoJTF = new JTextField();
 			codMedicoJTF.setBounds(284, 130, 128, 24);
+
+			DefaultListModel<String> contenidoDLM = new DefaultListModel<String>(); 
+			JList<String> resultadoJL = new JList<String>(contenidoDLM);
 			resultadoJL.setBounds(128, 164, 406, 192);
 			resultadoJL.setEnabled(false);
 			
+			JLabel mensajeJL = new JLabel("");
 			mensajeJL.setBounds(140, 370, 420, 24);
 			mensajeJL.setForeground(Color.RED);
 			
+			JButton buscarJB = new JButton("Buscar");
 			buscarJB.setBounds(420, 123, 128, 32);
+
+			JButton volverJB = new JButton("Volver");
 			volverJB.setBounds(192,  412, 256, 32);
 
-			addWindowListener(new WindowListener() {
-
-				@Override
-				public void windowActivated(WindowEvent e) {}
-
-				@Override
-				public void windowClosed(WindowEvent e) {}
-
+			addWindowListener(new WindowAdapter() {
 				@Override
 				public void windowClosing(WindowEvent e) {
 					cerrarVentana();
-				}
-
-				@Override
-				public void windowDeactivated(WindowEvent e) {}
-
-				@Override
-				public void windowDeiconified(WindowEvent e) {}
-
-				@Override
-				public void windowIconified(WindowEvent e) {}
-
-				@Override
-				public void windowOpened(WindowEvent e) {}
-							
+				}	
 			});
 			
-			buscarJB.addActionListener(new ActionListener() {
-				@Override
-				public void actionPerformed(ActionEvent event) {
-					try {
-						contenidoDLM.clear();
+			buscarJB.addActionListener(e -> {
+				try {
+					contenidoDLM.clear();
+					
+					ArrayList<String> enfermedades = controlador.listarEnfermedadesPorMedico(codMedicoJTF.getText());
+	
+					if( enfermedades.size() == 0)
+						contenidoDLM.add(0,"No existe ningún medico con ese codigo.");
+					else 
+						contenidoDLM.addAll(enfermedades);
 						
-						ArrayList<String> enfermedades = controlador.listarEnfermedadesPorMedico(codMedicoJTF.getText());
-		
-						if( enfermedades.size() == 0)
-							contenidoDLM.add(0,"No existe ningún medico con ese codigo.");
-						else 
-							contenidoDLM.addAll(enfermedades);
-							
-						mensajeJL.setText("");
-					}catch(Exception e) {
-						mensajeJL.setText(e.getMessage());
-						codMedicoJTF.setText("");
-					}
+					mensajeJL.setText("");
+				}catch(Exception ex) {
+					mensajeJL.setText(ex.getMessage());
+					codMedicoJTF.setText("");
 				}
 			});
 			
-			volverJB.addActionListener(new ActionListener() {
-				@Override
-				public void actionPerformed(ActionEvent event) {
-					cerrarVentana();
-				}
-			});
+			volverJB.addActionListener(e ->
+				cerrarVentana()
+			);
 			
 			add(codMedicoJL);
 			add(codMedicoJTF);
 			add(resultadoJL);
 			add(mensajeJL);
-			add(tituloJL);
 			add(nombreVentanaJL);
 			add(buscarJB);
 			add(volverJB);
-		}
-	}
-	
-	private void resetearVentana() {
-		contenidoDLM.clear();
-		codMedicoJTF.setText("");
-		mensajeJL.setText("");
+			}
+		});
 	}
 	
 	private void cerrarVentana() {
-		resetearVentana();
-		GestorVentanas.getInstance().cambiarVentana("informesEnfermedades", "informes");
+		GestorVentanas.getInstance().finalizarVentana(Ventana.INFORMES_ENFERMEDADES, Ventana.INFORMES);
 	}
 }

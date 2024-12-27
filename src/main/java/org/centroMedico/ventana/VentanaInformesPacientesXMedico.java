@@ -19,16 +19,11 @@ import javax.swing.JTextField;
 import org.centroMedico.controlador.CENTROMEDICO;
 import org.centroMedico.servicio.GestorVentanas;
 
-public class VentanaInformesPacientesXMedico extends JFrame{
+public class VentanaInformesPacientesXMedico extends VentanaBase{
 
 	private static final long serialVersionUID = 1L;
 	
-	private static VentanaInformesPacientesXMedico instancia;
-	
-	private final String nombreVentana = "Informes de pacientes por medico";
-	
-	private JLabel tituloJL = new JLabel(GestorVentanas.TITULO);
-	private JLabel nombreVentanaJL = new JLabel(nombreVentana);
+	private JLabel nombreVentanaJL = new JLabel("Informes de pacientes por medico");
 	private JLabel codMedicoJL = new JLabel("Codigo del medico:");
 	private JLabel mensajeJL = new JLabel("");
 	private JTextField codMedicoJTF = new JTextField();
@@ -37,22 +32,10 @@ public class VentanaInformesPacientesXMedico extends JFrame{
 	private JButton buscarJB = new JButton("Buscar");
 	private JButton volverJB = new JButton("Volver");
 	
-	private VentanaInformesPacientesXMedico(){
-		JPanel pantalla = new Pantalla();
-		
-		setSize(GestorVentanas.ALTO, GestorVentanas.ANCHO);
-		setTitle(GestorVentanas.TITULO + " - " + nombreVentana);
-		add(pantalla);
-		setLocationRelativeTo(null);
-		setResizable(false);
+	public VentanaInformesPacientesXMedico(){
+		super("Informes de pacientes por medico");
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-	}
-	
-	public static VentanaInformesPacientesXMedico getInstancia() {
-		if(instancia == null)
-			instancia = new VentanaInformesPacientesXMedico();
-		
-		return instancia;
+		inicializar(new Pantalla());
 	}
 	
 	private class Pantalla extends JPanel{
@@ -60,10 +43,6 @@ public class VentanaInformesPacientesXMedico extends JFrame{
 		private static final long serialVersionUID = 1L;
 
 		public Pantalla() {
-			setLayout(null);
-			
-			tituloJL.setBounds(170, 64, 320, 32);
-			tituloJL.setFont(new Font("Serif", Font.PLAIN, 22));
 			nombreVentanaJL.setBounds(165, 96, 360, 32);
 			nombreVentanaJL.setFont(new Font("Serif", Font.PLAIN, 18));
 			
@@ -137,7 +116,6 @@ public class VentanaInformesPacientesXMedico extends JFrame{
 			add(codMedicoJTF);
 			add(resultadoJL);
 			add(mensajeJL);
-			add(tituloJL);
 			add(nombreVentanaJL);
 			add(buscarJB);
 			add(volverJB);
@@ -152,6 +130,6 @@ public class VentanaInformesPacientesXMedico extends JFrame{
 	
 	public void cerrarVentana() {
 		resetearVentana();
-		GestorVentanas.getInstance().cambiarVentana("informesPacientes", "informes");
+		GestorVentanas.getInstance().cambiarVentana(Ventana.INFORMES_PACIENTES, Ventana.INFORMES);
 	}
 }

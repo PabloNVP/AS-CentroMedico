@@ -4,8 +4,8 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -18,17 +18,13 @@ import org.centroMedico.controlador.CENTROMEDICO;
 import org.centroMedico.servicio.GestorMensaje;
 import org.centroMedico.servicio.GestorVentanas;
 
-public class VentanaIngresoPaciente extends JFrame{
+public class VentanaIngresoPaciente extends VentanaBase{
 
 	private static final long serialVersionUID = 1L;
 	
-	private static VentanaIngresoPaciente instancia;
-	
-	private final String NOMBRE_VENTANA = "Ingresar datos del paciente";
 	private final String INGRESAR_NUEVO = "Se han guardado los datos del paciente correctamente, ¿Desea ingresar otro?";
 	
-	private JLabel tituloJL = new JLabel(GestorVentanas.TITULO);
-	private JLabel nombreVentanaJL = new JLabel(NOMBRE_VENTANA);
+	private JLabel nombreVentanaJL = new JLabel("Ingresar datos del paciente");
 	private JLabel codPacienteJL = new JLabel("Codigo del paciente:");
 	private JLabel nomPacienteJL = new JLabel("Nombre del paciente:");
 	private JLabel mensajeJL = new JLabel("");
@@ -39,22 +35,10 @@ public class VentanaIngresoPaciente extends JFrame{
 	private JButton ingresarJB = new JButton("Ingresar");
 	private JButton volverJB = new JButton("Volver");
 	
-	private VentanaIngresoPaciente(){
-		JPanel pantalla = new Pantalla();
-		
-		setSize(GestorVentanas.ALTO, GestorVentanas.ANCHO);
-		setTitle(GestorVentanas.TITULO + " - " + NOMBRE_VENTANA);
-		add(pantalla);
-		setLocationRelativeTo(null);
-		setResizable(false);
+	public VentanaIngresoPaciente(){
+		super("Ingresar datos del paciente");
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-	}
-	
-	public static VentanaIngresoPaciente getInstancia() {
-		if(instancia == null)
-			instancia = new VentanaIngresoPaciente();
-		
-		return instancia;
+		inicializar(new Pantalla());
 	}
 	
 	private class Pantalla extends JPanel{
@@ -62,10 +46,6 @@ public class VentanaIngresoPaciente extends JFrame{
 		private static final long serialVersionUID = 1L;
 
 		public Pantalla() {
-			setLayout(null);
-			
-			tituloJL.setBounds(170, 64, 320, 32);
-			tituloJL.setFont(new Font("Serif", Font.PLAIN, 22));
 			nombreVentanaJL.setBounds(180, 96, 320, 32);
 			nombreVentanaJL.setFont(new Font("Serif", Font.PLAIN, 18));
 			
@@ -93,52 +73,29 @@ public class VentanaIngresoPaciente extends JFrame{
 			ingresarJB.setBounds(192, 304, 256, 32);
 			volverJB.setBounds(192,  356, 256, 32);
 
-			addWindowListener(new WindowListener() {
-
-				@Override
-				public void windowActivated(WindowEvent e) {}
-
-				@Override
-				public void windowClosed(WindowEvent e) {}
-
+			addWindowListener(new WindowAdapter() {
 				@Override
 				public void windowClosing(WindowEvent e) {
 					cerrarVentana();
 				}
-
-				@Override
-				public void windowDeactivated(WindowEvent e) {}
-
-				@Override
-				public void windowDeiconified(WindowEvent e) {}
-
-				@Override
-				public void windowIconified(WindowEvent e) {}
-
-				@Override
-				public void windowOpened(WindowEvent e) {}
-							
 			});
 			
-			ingresarJB.addActionListener(new ActionListener() {
-				@Override
-				public void actionPerformed(ActionEvent event) {
-					String codPac = codPacienteJTF.getText();
-					String nomPac = nomPacienteJPF.getText();
+			ingresarJB.addActionListener(e -> {
+				String codPac = codPacienteJTF.getText();
+				String nomPac = nomPacienteJPF.getText();
+				
+				try {
+					CENTROMEDICO.ingresarPaciente(codPac,nomPac);
 					
-					try {
-						CENTROMEDICO.ingresarPaciente(codPac,nomPac);
-						
-						int opcion = JOptionPane.showConfirmDialog(null, INGRESAR_NUEVO, NOMBRE_VENTANA, JOptionPane.YES_NO_OPTION);
-						
-						if(opcion == JOptionPane.NO_OPTION) {
-							cerrarVentana();
-						}
-						
-						resetearVentana();
-					} catch (Exception e) {
-						mensajeJL.setText("<html>" + e.getMessage() + "</html>");
+					int opcion = JOptionPane.showConfirmDialog(null, INGRESAR_NUEVO, "Ingresar datos del paciente", JOptionPane.YES_NO_OPTION);
+					
+					if(opcion == JOptionPane.NO_OPTION) {
+						cerrarVentana();
 					}
+					
+					resetearVentana();
+				} catch (Exception ex) {
+					mensajeJL.setText("<html>" + ex.getMessage() + "</html>");
 				}
 			});
 			
@@ -156,7 +113,6 @@ public class VentanaIngresoPaciente extends JFrame{
 			add(mensajeJL);
 			add(codPacienteAyuda);
 			add(nomPacienteAyuda);
-			add(tituloJL);
 			add(nombreVentanaJL);
 			add(ingresarJB);
 			add(volverJB);
@@ -171,6 +127,6 @@ public class VentanaIngresoPaciente extends JFrame{
 	
 	private void cerrarVentana() {
 		resetearVentana();
-		GestorVentanas.getInstance().cambiarVentana("ingresoPaciente", "ingreso");
+		GestorVentanas.getInstance().cambiarVentana(Ventana.INGRESO_PACIENTE, Ventana.INGRESO);
 	}
 }
