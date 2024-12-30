@@ -16,12 +16,13 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import org.centroMedico.controlador.CENTROMEDICO;
+import org.centroMedico.controlador.ControllerInformesPacientes;
 import org.centroMedico.servicio.GestorVentanas;
 
 public class VentanaInformesPacientesXMedico extends VentanaBase{
-
 	private static final long serialVersionUID = 1L;
+
+	private ControllerInformesPacientes controlador = new ControllerInformesPacientes();
 	
 	private JLabel nombreVentanaJL = new JLabel("Informes de pacientes por medico");
 	private JLabel codMedicoJL = new JLabel("Codigo del medico:");
@@ -90,7 +91,7 @@ public class VentanaInformesPacientesXMedico extends VentanaBase{
 					try {
 						contenidoDLM.clear();
 						
-						ArrayList<String> pacientes = CENTROMEDICO.listarPacientesPorMedico(codMedicoJTF.getText());
+						ArrayList<String> pacientes = controlador.listarPacientesPorMedico(codMedicoJTF.getText());
 		
 						if( pacientes.size() == 0)
 							contenidoDLM.add(0,"No existe ningún medico con ese codigo.");

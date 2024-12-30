@@ -57,10 +57,10 @@ public class VentanaConectar extends VentanaBase{
 					GestorBaseDeDatos.getInstance().iniciarBaseDeDatos();
 					GestorVentanas.getInstance().cerrarVentana(Ventana.CONECTAR);
 					GestorVentanas.getInstance().iniciarVentana(Ventana.INICIO);
-				}catch(SQLException ex) {
-					mensajeJL.setText(GestorMensaje.ERROR_SQL.getMensaje());
 				}catch(LoginException ex){
 					mensajeJL.setText(GestorMensaje.ERROR_LOGIN.getMensaje());
+				}catch(Exception ex) {
+					mensajeJL.setText(GestorMensaje.ERROR_SQL.getMensaje());
 				}
 			});
 			

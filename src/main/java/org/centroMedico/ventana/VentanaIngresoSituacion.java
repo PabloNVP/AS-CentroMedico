@@ -14,12 +14,14 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
-import org.centroMedico.controlador.CENTROMEDICO;
+import org.centroMedico.controlador.ControllerIngresarSituacion;
 import org.centroMedico.servicio.GestorMensaje;
 import org.centroMedico.servicio.GestorVentanas;
 
 public class VentanaIngresoSituacion extends VentanaBase{
 	private static final long serialVersionUID = 1L;
+
+	private ControllerIngresarSituacion controlador = new ControllerIngresarSituacion();
 	
 	private final String INGRESAR_NUEVO = "Se ha guardado el historial correctamente, ¿Desea ingresar otro?";
 	
@@ -98,7 +100,7 @@ public class VentanaIngresoSituacion extends VentanaBase{
 				String situacion = sitPacienteJTA.getText();
 				
 				try {
-					CENTROMEDICO.ingresarSituacionPaciente(codPaciente, codMedico, situacion);
+					controlador.ingresarSituacionPaciente(codPaciente, codMedico, situacion);
 				
 					int opcion = JOptionPane.showConfirmDialog(null, INGRESAR_NUEVO, "Ingresar situación del paciente", JOptionPane.YES_NO_OPTION);
 					
