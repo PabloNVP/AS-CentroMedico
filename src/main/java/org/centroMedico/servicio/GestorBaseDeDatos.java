@@ -7,6 +7,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 /** 
@@ -45,7 +47,15 @@ public class GestorBaseDeDatos {
         }
     }
 
-    public void crearTablaPaciente(Connection conn) throws Exception{
+    private void activarClaveForanea(Connection conn) throws Exception{
+        try(Statement stmt = conn.createStatement()){
+            stmt.execute("PRAGMA foreign_keys = ON;");
+        }catch(SQLException ex){
+            throw new Exception(GestorMensaje.ERROR_BD_CONFIGURACION.getMensaje());
+        }   
+    }
+
+    private void crearTablaPaciente(Connection conn) throws Exception{
         try (Statement stmt = conn.createStatement()) {
             stmt.execute("CREATE TABLE IF NOT EXISTS Paciente( "
                         + " codigo INTEGER PRIMARY KEY AUTOINCREMENT, "
@@ -76,8 +86,8 @@ public class GestorBaseDeDatos {
                             + " codigoPaciente INTEGER, "
                             + " situacion TEXT NOT NULL, "
                             + " PRIMARY KEY (fecha, codigoMedico, codigoPaciente), " 
-                            + " FOREIGN KEY (codigoPaciente) REFERENCES Paciente(codigo), "
-                            + " FOREIGN KEY (codigoMedico) REFERENCES Medico(codigo) "
+                            + " CONSTRAINT fk_paciente FOREIGN KEY (codigoPaciente) REFERENCES Paciente(codigo), "
+                            + " CONSTRAINT fk_medico FOREIGN KEY (codigoMedico) REFERENCES Medico(codigo) "
                             + ");");
         }catch(SQLException ex){
             throw new Exception(GestorMensaje.ERROR_SITUACION_CREACION.getMensaje());
@@ -123,28 +133,70 @@ public class GestorBaseDeDatos {
         }
     }
 
-    public ArrayList<String> obtenerEnfermedades(String codigo) throws Exception{
-        ArrayList<String> enfermedades = new ArrayList<>();
+    public void ingresarSituacion(String codigoPaciente, String codigoMedico, String situacion) throws Exception{
+        try (Connection conn = DriverManager.getConnection(DRIVER + DB_PATH);
+            PreparedStatement pstmt = conn.prepareStatement("INSERT INTO "
+                                                            + "Situacion(fecha, codigoPaciente, codigoMedico, situacion) "
+                                                            + "VALUES (?, ?, ?, ?);");) {
+
+                activarClaveForanea(conn);
+                
+                pstmt.setString(1, LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+                pstmt.setString(2, codigoPaciente);
+                pstmt.setString(3, codigoMedico);
+                pstmt.setString(4, situacion);
+
+                pstmt.executeUpdate();
+
+        }catch(SQLException ex){
+            throw new Exception(GestorMensaje.ERROR_SITUACION_NO_EXISTEN_CODIGOS.getMensaje());
+        }
+    }
+
+    public ArrayList<String> obtenerSituaciones(String codigo) throws Exception{
+        ArrayList<String> situaciones = new ArrayList<>();
 
         try (Connection conn = DriverManager.getConnection(DRIVER + DB_PATH);
-            PreparedStatement pstmt = conn.prepareStatement("SELECT nombre "
-                                                            + "FROM Medico "
-                                                            + "WHERE codigo = ?");) {
+            PreparedStatement pstmt = conn.prepareStatement("SELECT situacion "
+                                                            + "FROM Situacion "
+                                                            + "WHERE codigoMedico = ?");) {
 
             pstmt.setString(1, codigo);
 
             try (ResultSet rs = pstmt.executeQuery()) {
                 while (rs.next()) {
-                    enfermedades.add(rs.getString("nombre"));
+                    situaciones.add(rs.getString("situacion"));
                 }
             }
         }catch(SQLException ex){
-            throw new Exception("Error al querer obtener las enfermedades.");
+            throw new Exception(GestorMensaje.ERROR_INFORMES_SITUACIONES.getMensaje());
         }
 
-        return enfermedades;
+        return situaciones;
     }
 
+    public ArrayList<String> obtenerPacientesXMedico(String codigo) throws Exception{
+        ArrayList<String> pacientes = new ArrayList<>();
 
+        try (Connection conn = DriverManager.getConnection(DRIVER + DB_PATH);
+            PreparedStatement pstmt = conn.prepareStatement("SELECT nombre "
+                                                            + "FROM Paciente AS P "
+                                                            + "INNER JOIN Situacion AS S ON P.codigo = S.codigoPaciente "
+                                                            + "WHERE S.codigoMedico = ?");) {
+
+            pstmt.setString(1, codigo);
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    pacientes.add(rs.getString("nombre"));
+                }
+            }
+        }catch(SQLException ex){
+            //throw new Exception(GestorMensaje.ERROR_INFORMES_PACIENTES.getMensaje());
+            throw new Exception(ex.getMessage());
+        }
+
+        return pacientes;
+    }
 }
  
