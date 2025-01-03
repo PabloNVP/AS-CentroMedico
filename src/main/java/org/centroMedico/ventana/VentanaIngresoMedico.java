@@ -12,6 +12,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 
 import org.centroMedico.controlador.ControllerIngresarMedico;
 import org.centroMedico.servicio.GestorMensaje;
@@ -74,6 +75,7 @@ public class VentanaIngresoMedico extends VentanaBase{
 			
 			JLabel mensajeJL = new JLabel("");
 			mensajeJL.setBounds(100, 260, 460, 32);
+			mensajeJL.setHorizontalAlignment(SwingConstants.CENTER);
 			mensajeJL.setForeground(Color.RED);
 			
 			ingresarJB.setBounds(192, 304, 256, 32);

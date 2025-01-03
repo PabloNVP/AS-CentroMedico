@@ -2,7 +2,6 @@ package org.centroMedico.ventana;
 
 import java.awt.Color;
 import java.awt.Font;
-import java.sql.SQLException;
 
 import javax.security.auth.login.LoginException;
 import javax.swing.JButton;

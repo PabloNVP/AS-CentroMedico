@@ -13,6 +13,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 
 import org.centroMedico.controlador.ControllerIngresarSituacion;
 import org.centroMedico.servicio.GestorMensaje;
@@ -25,66 +26,66 @@ public class VentanaIngresoSituacion extends VentanaBase{
 	
 	private final String INGRESAR_NUEVO = "Se ha guardado el historial correctamente, ¿Desea ingresar otro?";
 	
-	private JLabel nombreVentanaJL = new JLabel("Ingresar situación del paciente");
-	private JLabel codPacienteJL = new JLabel("Codigo del paciente:");
-	private JLabel codMedicoJL = new JLabel("Codigo del medico:");
-	private JLabel sitPacienteJL = new JLabel("Diagnostico del paciente:");
-	private JLabel mensajeJL = new JLabel("");
-	private JLabel codMedicoAyuda = new JLabel("?");
-	private JLabel codPacienteAyuda = new JLabel("?");
-	private JLabel sitPacienteAyuda = new JLabel("?");
-	private JTextField codPacienteJTF = new JTextField();
-	private JTextField codMedicoJTF = new JTextField();
-	private JTextArea sitPacienteJTA = new JTextArea(5, 4);
-	private JScrollPane sitPacienteJSP = new JScrollPane(sitPacienteJTA);
-	private JButton ingresarJB = new JButton("Ingresar");
-	private JButton volverJB = new JButton("Volver");
-	
 	public VentanaIngresoSituacion(){
 		super("Ingresar situación del paciente");
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-		inicializar(new Pantalla());
-	}
-	
-	private class Pantalla extends JPanel{
-		
-		private static final long serialVersionUID = 1L;
-
-		public Pantalla() {
+		inicializar(new JPanel(){
+			{
+			JLabel nombreVentanaJL = new JLabel("Ingresar situación del paciente");
 			nombreVentanaJL.setBounds(180, 96, 360, 32);
 			nombreVentanaJL.setFont(new Font("Serif", Font.PLAIN, 18));
 			
+			JLabel codPacienteJL = new JLabel("Codigo del paciente:");
 			codPacienteJL.setBounds(128, 160, 192, 32);
+
+			JLabel codMedicoJL = new JLabel("Codigo del medico:");
 			codMedicoJL.setBounds(128, 192, 192, 32);
+
+			JLabel sitPacienteJL = new JLabel("Diagnostico del paciente:");
 			sitPacienteJL.setBounds(96, 232, 192, 32);
 			
+			JTextField codPacienteJTF = new JTextField();
 			codPacienteJTF.setBounds(288, 165, 192, 24);
+
+			JTextField codMedicoJTF = new JTextField();
 			codMedicoJTF.setBounds(288, 197, 192, 24);
-			sitPacienteJSP.setBounds(288, 224, 192, 64);
+
+			JTextArea sitPacienteJTA = new JTextArea(5, 4);
 			sitPacienteJTA.setLineWrap(true);
-			
+
+			JScrollPane sitPacienteJSP = new JScrollPane(sitPacienteJTA);
+			sitPacienteJSP.setBounds(288, 224, 192, 64);
+
+			JLabel mensajeJL = new JLabel("");
 			mensajeJL.setBounds(140, 300, 400, 32);
+			mensajeJL.setHorizontalAlignment(SwingConstants.CENTER);
 			mensajeJL.setForeground(Color.RED);
 			
+			JLabel codPacienteAyuda = new JLabel("?");
 			codPacienteAyuda.setBounds(490, 168, 16, 16);
 			codPacienteAyuda.setToolTipText(GestorMensaje.AYUDA_COD_PACIENTE.getMensaje());
 			codPacienteAyuda.setBackground(Color.LIGHT_GRAY);
 			codPacienteAyuda.setHorizontalAlignment(JLabel.CENTER);
 			codPacienteAyuda.setOpaque(true);
 			
+			JLabel codMedicoAyuda = new JLabel("?");
 			codMedicoAyuda.setBounds(490, 200, 16, 16);
 			codMedicoAyuda.setToolTipText(GestorMensaje.AYUDA_COD_MEDICO.getMensaje());
 			codMedicoAyuda.setBackground(Color.LIGHT_GRAY);
 			codMedicoAyuda.setHorizontalAlignment(JLabel.CENTER);
 			codMedicoAyuda.setOpaque(true);
 			
+			JLabel sitPacienteAyuda = new JLabel("?");
 			sitPacienteAyuda.setBounds(490, 250, 16, 16);
 			sitPacienteAyuda.setToolTipText(GestorMensaje.AYUDA_SIT_PACIENTE.getMensaje());
 			sitPacienteAyuda.setBackground(Color.LIGHT_GRAY);
 			sitPacienteAyuda.setHorizontalAlignment(JLabel.CENTER);
 			sitPacienteAyuda.setOpaque(true);
 			
+			JButton ingresarJB = new JButton("Ingresar");
 			ingresarJB.setBounds(192, 340, 256, 32);
+
+			JButton volverJB = new JButton("Volver");
 			volverJB.setBounds(192,  388, 256, 32);
 			
 			addWindowListener(new WindowAdapter() {
@@ -134,7 +135,8 @@ public class VentanaIngresoSituacion extends VentanaBase{
 			add(nombreVentanaJL);
 			add(ingresarJB);
 			add(volverJB);
-		}
+			}
+		});
 	}
 
 	private void cerrarVentana() {
