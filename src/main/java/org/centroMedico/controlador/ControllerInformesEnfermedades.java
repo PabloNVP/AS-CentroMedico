@@ -15,13 +15,9 @@ public class ControllerInformesEnfermedades {
     public ArrayList<String> listarEnfermedadesPorMedico(String codigo) throws Exception {
 		
 		// Valida el codigo del medico.
-		if(!Validador.esCodigoValido(codigo)){
+		if(!Validador.esCodigoValido(codigo))
 			throw new Exception(GestorMensaje.ERROR_CODIGO_RANGO_MEDICO.getMensaje());
-		}
 
-		// Arreglo de información
-		ArrayList<String> enfermedades = GestorBaseDeDatos.getInstance().obtenerEnfermedades(codigo);
-
-		return enfermedades;
+		return GestorBaseDeDatos.getInstance().obtenerSituaciones(codigo);
 	}
 }

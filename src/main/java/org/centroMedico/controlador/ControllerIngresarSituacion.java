@@ -1,5 +1,6 @@
 package org.centroMedico.controlador;
 
+import org.centroMedico.servicio.GestorBaseDeDatos;
 import org.centroMedico.servicio.GestorMensaje;
 import org.centroMedico.servicio.Validador;
 
@@ -7,7 +8,7 @@ public class ControllerIngresarSituacion {
     
     public ControllerIngresarSituacion(){};
 
-    public void ingresarSituacionPaciente(String codPac, String codMed, String sit) throws Exception {
+    public void ingresarSituacionPaciente(String codPac, String codMed, String situacion) throws Exception {
 		// Valida el codigo del paciente.
 		if(!Validador.esCodigoValido(codPac)){
 			throw new Exception(GestorMensaje.ERROR_CODIGO_RANGO_PACIENTE.getMensaje());
@@ -19,19 +20,15 @@ public class ControllerIngresarSituacion {
 		}
 		
 		// Valida el Rango del nombre del paciente.
-		if(!Validador.esRangoNombreValido(sit, 9, 201)) {
+		if(!Validador.esRangoNombreValido(situacion, 9, 201)) {
 			throw new Exception(GestorMensaje.ERROR_RANGO_SITUACION.getMensaje());
 		}
 		
 		// Valida el formato de la situacion.
-		if(!Validador.esFormatoNombreValido(sit)) {
+		if(!Validador.esFormatoNombreValido(situacion)) {
 			throw new Exception(GestorMensaje.ERROR_FORMATO_SITUACION.getMensaje());
 		}
 		
-		/* SQL FUNCION
-		} catch (IOException ioe) {
-			// Envia una excepción en caso de no tener permisos en el archivo.
-			throw new Exception(GestorMensaje.ERROR_ARCHIVO_SITUACION.getMensaje());
-		} */
+		GestorBaseDeDatos.getInstance().ingresarSituacion(codPac, codMed, situacion);
 	}
 }
