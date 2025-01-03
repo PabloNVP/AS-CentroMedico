@@ -5,17 +5,12 @@ import java.util.Map;
 
 import javax.swing.JFrame;
 
-import org.centroMedico.ventana.*;
+import org.centroMedico.ventana.Ventana;
 
 public class GestorVentanas {
-    private Map<String, JFrame> ventanas;
+    private Map<Ventana, JFrame> ventanas;
 
     private static GestorVentanas instancia;
-
-	public final static int ALTO = 640; // Altura de las interfaces
-	public final static int ANCHO = 480; // Anchura de las interfaces
-
-	public final static String TITULO = "CENTRO MEDICO"; // Titulo de las interfaces
 
     public static GestorVentanas getInstance(){
         if(instancia == null)
@@ -25,24 +20,31 @@ public class GestorVentanas {
     }
 
     private GestorVentanas(){
-        this.ventanas = new HashMap<String, JFrame>();
+        this.ventanas = new HashMap<Ventana, JFrame>();
     }    
 
-    public void iniciarVentana(String nombreVentana){
-        switch (nombreVentana) {
-            case "conectar":
-                ventanas.put("conectar",  new VentanaConectar());
-                ventanas.get("conectar").setVisible(true);
-                break;
-        
-            default:
-                break;
-        }
+    public void iniciarVentana(Ventana ventana){
+        this.ventanas.put(ventana, ventana.crearVentana());
+        this.ventanas.get(ventana).setVisible(true);
     }
 
-    public void cambiarVentana(String nombreVentanaOcultar, String nombreVentanaMostrar){
-        this.ventanas.get(nombreVentanaOcultar).setVisible(false);
-        this.ventanas.get(nombreVentanaMostrar).setVisible(true);
+    public void cambiarVentana(Ventana ventanaOcultar, Ventana ventanaMostrar){
+        this.ventanas.get(ventanaOcultar).setVisible(false);
+
+        if(this.ventanas.get(ventanaMostrar) == null)
+            this.iniciarVentana(ventanaMostrar);
+        else
+            this.ventanas.get(ventanaMostrar).setVisible(true);
+    }
+
+    public void finalizarVentana(Ventana ventanaCerrar, Ventana ventanaMostrar){
+        this.cerrarVentana(ventanaCerrar);
+        this.ventanas.get(ventanaMostrar).setVisible(true);
+    }
+
+    public void cerrarVentana(Ventana ventana){
+        this.ventanas.get(ventana).dispose();
+        this.ventanas.remove(ventana);
     }
 
     public void limpiarVentanas(){
