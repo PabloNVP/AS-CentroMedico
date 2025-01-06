@@ -11,9 +11,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
-/** 
- * TODO: APLICAR SEGURIDAD 
- * */
+
 public class GestorBaseDeDatos {
     private static final String DRIVER = "jdbc:sqlite:";
     private static final String DB_PATH = "centroMedico.db";
@@ -101,7 +99,7 @@ public class GestorBaseDeDatos {
                                                             + "VALUES (?, ?);");) {
 
             pstmt.setString(1, codigo);
-            pstmt.setString(2, nombre);
+            pstmt.setString(2, Seguridad.getInstance().cifrado(nombre));
 
             pstmt.executeUpdate();
 
@@ -120,7 +118,7 @@ public class GestorBaseDeDatos {
                                                             + "VALUES (?, ?, ?);");) {
 
             pstmt.setString(1, codigo);
-            pstmt.setString(2, nombre);
+            pstmt.setString(2, Seguridad.getInstance().cifrado(nombre));
             pstmt.setString(3, especialidad);
 
             pstmt.executeUpdate();
@@ -144,7 +142,7 @@ public class GestorBaseDeDatos {
                 pstmt.setString(1, LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
                 pstmt.setString(2, codigoPaciente);
                 pstmt.setString(3, codigoMedico);
-                pstmt.setString(4, situacion);
+                pstmt.setString(4, Seguridad.getInstance().cifrado(situacion));
 
                 pstmt.executeUpdate();
 
@@ -153,7 +151,7 @@ public class GestorBaseDeDatos {
         }
     }
 
-    public ArrayList<String> obtenerSituaciones(String codigo) throws Exception{
+    public ArrayList<String> obtenerSituacionesXMedico(String codigo) throws Exception{
         ArrayList<String> situaciones = new ArrayList<>();
 
         try (Connection conn = DriverManager.getConnection(DRIVER + DB_PATH);
@@ -165,7 +163,7 @@ public class GestorBaseDeDatos {
 
             try (ResultSet rs = pstmt.executeQuery()) {
                 while (rs.next()) {
-                    situaciones.add(rs.getString("situacion"));
+                    situaciones.add(Seguridad.getInstance().descifrado(rs.getString("situacion")));
                 }
             }
         }catch(SQLException ex){
@@ -188,12 +186,11 @@ public class GestorBaseDeDatos {
 
             try (ResultSet rs = pstmt.executeQuery()) {
                 while (rs.next()) {
-                    pacientes.add(rs.getString("nombre"));
+                    pacientes.add(Seguridad.getInstance().descifrado(rs.getString("nombre")));
                 }
             }
         }catch(SQLException ex){
-            //throw new Exception(GestorMensaje.ERROR_INFORMES_PACIENTES.getMensaje());
-            throw new Exception(ex.getMessage());
+            throw new Exception(GestorMensaje.ERROR_INFORMES_PACIENTES.getMensaje());
         }
 
         return pacientes;
