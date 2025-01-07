@@ -15,9 +15,9 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
 import org.centroMedico.controlador.ControllerIngresarMedico;
+import org.centroMedico.modelo.Medico;
 import org.centroMedico.servicio.GestorMensaje;
 import org.centroMedico.servicio.GestorVentanas;
-import org.centroMedico.servicio.Validador;
 
 public class VentanaIngresoMedico extends VentanaBase{
 	private static final long serialVersionUID = 1L;
@@ -34,7 +34,7 @@ public class VentanaIngresoMedico extends VentanaBase{
 		super("Ingresar datos del medico");
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		// Declara el tiempo de respuesta del mouse sobre la etiqueta de ayuda.
-		javax.swing.ToolTipManager.sharedInstance().setInitialDelay(10);
+		javax.swing.ToolTipManager.sharedInstance().setInitialDelay(5);
 		inicializar(new JPanel(){
 			{
 			JLabel nombreVentanaJL = new JLabel("Ingresar datos del medico");
@@ -56,7 +56,7 @@ public class VentanaIngresoMedico extends VentanaBase{
 			JTextField nomMedicoJTF = new JTextField();
 			nomMedicoJTF.setBounds(288, 197, 192, 24);
 
-			JComboBox<String> espMedicoJTF = new JComboBox<String>(Validador.ESPECIALIDADES);
+			JComboBox<String> espMedicoJTF = new JComboBox<String>(Medico.ESPECIALIDADES);
 			espMedicoJTF.setBounds(288, 229, 192, 24);
 			
 			JLabel codMedicoAyuda = new JLabel("?");
@@ -92,7 +92,7 @@ public class VentanaIngresoMedico extends VentanaBase{
 				try {
 					String codigoMedico = codMedicoJTF.getText();
 					String nombreMedico = nomMedicoJTF.getText();
-					String especialidadMedico = Validador.ESPECIALIDADES[espMedicoJTF.getSelectedIndex()];
+					String especialidadMedico = Medico.ESPECIALIDADES[espMedicoJTF.getSelectedIndex()];
 					
 					controlador.ingresarMedico(codigoMedico, nombreMedico, especialidadMedico);
 						

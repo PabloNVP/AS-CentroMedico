@@ -7,10 +7,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
+import org.centroMedico.modelo.Medico;
+import org.centroMedico.modelo.Paciente;
+import org.centroMedico.modelo.Situacion;
 
 public class GestorBaseDeDatos {
     private static final String DRIVER = "jdbc:sqlite:";
@@ -92,14 +93,14 @@ public class GestorBaseDeDatos {
         }    
     }
 
-    public void ingresarPaciente(String codigo, String nombre) throws Exception{
+    public void ingresarPaciente(Paciente paciente) throws Exception{
         try (Connection conn = DriverManager.getConnection(DRIVER + DB_PATH);
             PreparedStatement pstmt = conn.prepareStatement("INSERT INTO "
                                                             + "Paciente(codigo, nombre) "
                                                             + "VALUES (?, ?);");) {
 
-            pstmt.setString(1, codigo);
-            pstmt.setString(2, Seguridad.getInstance().cifrado(nombre));
+            pstmt.setString(1, paciente.getCodigo());
+            pstmt.setString(2, Seguridad.getInstance().cifrado(paciente.getNombre()));
 
             pstmt.executeUpdate();
 
@@ -111,15 +112,15 @@ public class GestorBaseDeDatos {
         }
     }
 
-    public void ingresarMedico(String codigo, String nombre, String especialidad) throws Exception{
+    public void ingresarMedico(Medico medico) throws Exception{
         try (Connection conn = DriverManager.getConnection(DRIVER + DB_PATH);
             PreparedStatement pstmt = conn.prepareStatement("INSERT INTO "
                                                             + "Medico(codigo, nombre, especialidad) "
                                                             + "VALUES (?, ?, ?);");) {
 
-            pstmt.setString(1, codigo);
-            pstmt.setString(2, Seguridad.getInstance().cifrado(nombre));
-            pstmt.setString(3, especialidad);
+            pstmt.setString(1, medico.getCodigo());
+            pstmt.setString(2, Seguridad.getInstance().cifrado(medico.getNombre()));
+            pstmt.setString(3, medico.getEspecialidad());
 
             pstmt.executeUpdate();
 
@@ -131,7 +132,7 @@ public class GestorBaseDeDatos {
         }
     }
 
-    public void ingresarSituacion(String codigoPaciente, String codigoMedico, String situacion) throws Exception{
+    public void ingresarSituacion(Situacion situacion) throws Exception{
         try (Connection conn = DriverManager.getConnection(DRIVER + DB_PATH);
             PreparedStatement pstmt = conn.prepareStatement("INSERT INTO "
                                                             + "Situacion(fecha, codigoPaciente, codigoMedico, situacion) "
@@ -139,10 +140,10 @@ public class GestorBaseDeDatos {
 
                 activarClaveForanea(conn);
                 
-                pstmt.setString(1, LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
-                pstmt.setString(2, codigoPaciente);
-                pstmt.setString(3, codigoMedico);
-                pstmt.setString(4, Seguridad.getInstance().cifrado(situacion));
+                pstmt.setString(1, situacion.getFecha());
+                pstmt.setString(2, situacion.getCodigoPaciente());
+                pstmt.setString(3, situacion.getCodigoMedico());
+                pstmt.setString(4, Seguridad.getInstance().cifrado(situacion.getDescripcion()));
 
                 pstmt.executeUpdate();
 
@@ -151,7 +152,7 @@ public class GestorBaseDeDatos {
         }
     }
 
-    public ArrayList<String> obtenerSituacionesXMedico(String codigo) throws Exception{
+    public ArrayList<String> obtenerSituacionesXMedico(Medico medico) throws Exception{
         ArrayList<String> situaciones = new ArrayList<>();
 
         try (Connection conn = DriverManager.getConnection(DRIVER + DB_PATH);
@@ -159,7 +160,7 @@ public class GestorBaseDeDatos {
                                                             + "FROM Situacion "
                                                             + "WHERE codigoMedico = ?");) {
 
-            pstmt.setString(1, codigo);
+            pstmt.setString(1, medico.getCodigo());
 
             try (ResultSet rs = pstmt.executeQuery()) {
                 while (rs.next()) {
@@ -173,7 +174,7 @@ public class GestorBaseDeDatos {
         return situaciones;
     }
 
-    public ArrayList<String> obtenerPacientesXMedico(String codigo) throws Exception{
+    public ArrayList<String> obtenerPacientesXMedico(Medico medico) throws Exception{
         ArrayList<String> pacientes = new ArrayList<>();
 
         try (Connection conn = DriverManager.getConnection(DRIVER + DB_PATH);
@@ -182,7 +183,7 @@ public class GestorBaseDeDatos {
                                                             + "INNER JOIN Situacion AS S ON P.codigo = S.codigoPaciente "
                                                             + "WHERE S.codigoMedico = ?");) {
 
-            pstmt.setString(1, codigo);
+            pstmt.setString(1, medico.getCodigo());
 
             try (ResultSet rs = pstmt.executeQuery()) {
                 while (rs.next()) {

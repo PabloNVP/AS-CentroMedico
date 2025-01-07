@@ -1,26 +1,37 @@
 package org.centroMedico.modelo;
 
-public class Medico{
-    private String codigo;
-    private String nombre;
-    private Especialidad especialidad;
+import java.util.Arrays;
 
-    public Medico(String codigo, String nombre, Especialidad especialidad){
-        this.codigo = codigo;
-        this.nombre = nombre;
-        this.especialidad = especialidad;
+import org.centroMedico.servicio.GestorMensaje;
+
+public class Medico extends Paciente{
+
+    public static final String[] ESPECIALIDADES = {"Pediatria", "Traumatologia", "Cardiologia"};
+
+    private String especialidad;
+
+    public Medico(String codigo) throws Exception{
+        super(codigo);
     }
 
-    public String getCodigo(){
-        return this.codigo;
+    public Medico(String codigo, String nombre, String especialidad) throws Exception{
+        super(codigo, nombre);
+        setEspecialidad(especialidad);
     }
 
-    public String getNombre(){
-        return this.nombre;
-    }
-
-    public Especialidad getEspecialidad(){
+    public String getEspecialidad(){
         return this.especialidad;
     }
+
+    private void setEspecialidad(String especialidad) throws Exception{
+        if(esEspecialidadValida(especialidad))
+            this.especialidad = especialidad;
+        else
+            throw new Exception(GestorMensaje.ERROR_ESPECIALIDAD_VALORES_MEDICO.getMensaje());
+    }
+
+    private static boolean esEspecialidadValida(String especialidadMedico) {
+		return Arrays.stream(ESPECIALIDADES).anyMatch(especialidad -> especialidad.equals(especialidadMedico));
+	}
 
 }

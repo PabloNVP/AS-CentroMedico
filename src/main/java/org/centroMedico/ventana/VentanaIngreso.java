@@ -12,32 +12,27 @@ import javax.swing.JPanel;
 import org.centroMedico.servicio.GestorVentanas;
 
 public class VentanaIngreso extends VentanaBase{
-
 	private static final long serialVersionUID = 1L;
-	
-	private JLabel nombreVentanaJL = new JLabel("Ingreso de Pacientes");
-	private JButton datosJB = new JButton("Ingresar datos del Paciente");
-	private JButton situacionJB = new JButton("Ingresar situación del Paciente");
-	private JButton medicoJB = new JButton("Ingresar datos del Medico");
-	private JButton volverJB = new JButton("Volver");
 	
 	public VentanaIngreso(){
 		super("Ingreso de Pacientes");
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-		inicializar(new Pantalla());
-	}
-	
-	private class Pantalla extends JPanel{
-		
-		private static final long serialVersionUID = 1L;
-
-		public Pantalla() {
+		inicializar(new JPanel(){
+			{
+			JLabel nombreVentanaJL = new JLabel("Ingreso de Pacientes");
 			nombreVentanaJL.setBounds(220, 96, 320, 32);
 			nombreVentanaJL.setFont(new Font("Serif", Font.PLAIN, 18));
 			
+			JButton datosJB = new JButton("Ingresar datos del Paciente");
 			datosJB.setBounds(192, 192, 256, 32);
+
+			JButton situacionJB = new JButton("Ingresar situación del Paciente");
 			situacionJB.setBounds(192,  256, 256, 32);
+
+			JButton medicoJB = new JButton("Ingresar datos del Medico");
 			medicoJB.setBounds(192, 320, 256, 32);
+
+			JButton volverJB = new JButton("Volver");
 			volverJB.setBounds(192, 384, 256, 32);
 			
 			addWindowListener(new WindowAdapter() {
@@ -68,7 +63,8 @@ public class VentanaIngreso extends VentanaBase{
 			add(situacionJB);
 			add(medicoJB);
 			add(volverJB);
-		}
+			}
+		});
 	}
 	
 	public void cerrarVentana() {
